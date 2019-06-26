@@ -4,6 +4,7 @@
     <title>UReport</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/ureport-93a7b.appspot.com/o/images%2Fic_launcher-web.png?alt=media&token=989ffc02-56a0-4921-8fe9-3dd7481a1389">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Boogaloo" rel="stylesheet">
@@ -15,7 +16,9 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="container">
-        <a class="navbar-brand" href="/">UReport</a>
+        <a class="navbar-brand" href="/">
+          <img src="https://firebasestorage.googleapis.com/v0/b/ureport-93a7b.appspot.com/o/images%2Fic_launcher-web.png?alt=media&token=989ffc02-56a0-4921-8fe9-3dd7481a1389" width="40" height="40" class="d-inline-block align-center" alt="">
+        </a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
@@ -38,10 +41,53 @@
       </div>
     </div>
 
+    <div id="modal-details" class="modal" tabindex="-1" role="dialog">
+
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Report title <span class="badge badge-success">${data.status}</span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div id="map"></div>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="box-modal">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/ureport-93a7b.appspot.com/o/images%2Fic_launcher-web.png?alt=media&token=989ffc02-56a0-4921-8fe9-3dd7481a1389" class="card-img-top img-fluid" width="100%">
+                   </div>
+                </div>
+                <div class="col-md-8">
+                  <p class="card-text">${data.remark}</p>
+                </div>
+              </div>
+
+              <p>Localización especifica: <span> En la A-23</span></p>
+              <p>Reportador: <span> Alvaro Garcia</span></p>
+              <p>Fecha de Reporte: <span> 25/06/2019</span></p>
+              <p>Nivel del riesgo: <span> Alto</span></p>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-outline-primary ">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx6Audv0FgLQf-lwX8vEzOg1KjfG6QzBg&callback=initMap"></script>
     <script>
     var reports = <%- JSON.stringify(reports) %>;
     $(document).ready(function(){
@@ -52,7 +98,21 @@
       });
       $("#card-container").html(struct);
 
+      $(".show-details").click(function(){
+        $('#modal-details').modal('show')
+      });
+
      });
+
+     function initMap() {
+      // The location of Uluru
+      var uluru = {lat: -25.344, lng: 131.036};
+      // The map, centered at Uluru
+      var map = new google.maps.Map(
+          document.getElementById('map'), {zoom: 15, center: uluru});
+      // The marker, positioned at Uluru
+      var marker = new google.maps.Marker({position: uluru, map: map});
+    }
 
      function createRow (data){
          var row = `<div class="col-md-4">
@@ -70,7 +130,7 @@
                      <div class="card-footer">
                        <div class="d-flex justify-content-between align-items-center">
                          <div class="btn-group">
-                           <button type="button" class="btn btn-sm btn-outline-primary">Ver detalles</button>
+                           <button type="button" class="btn btn-sm btn-outline-primary show-details">Ver detalles</button>
                          </div>
                          <p class="mb-0">${data.datetime}</p>
                        </div>
