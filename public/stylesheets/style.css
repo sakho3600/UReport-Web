@@ -1,5 +1,5 @@
 body {
-  padding-top: 30px; 
+  padding-top: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -13,4 +13,23 @@ a {
 
 .font-2{
   font-size: 1.3rem;
+}
+
+.box{
+  width: 100%;
+  height: 350px;
+  background: #CCC;
+  overflow: hidden;
+}
+
+.box img{
+  width: 100%;
+  height: auto;
+}
+@supports(object-fit: cover){
+    .box img{
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
 }
